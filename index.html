@@ -1,11 +1,19 @@
+<!-- 
+Author: George Howard
+Last Edited: 2.24.25
+GAWA (George's Awesome Weather App)
+
+NOTICE: 
+AI was used for inspiration and 
+-->
+
 <head> 
     <meta charset="UTF-8"> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta name="apple-mobile-web-app-capable" content="yes"> 
     <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
- 
-    <title>Weather App</title> 
+    <title>GAWA</title> 
     <link rel="icon" type="image/x-icon" href="images/favicon.ico"> 
     <link rel="apple-touch-icon" href="images/apple-touch-icon-iphone-64x64.png"> 
     <link rel="apple-touch-icon" sizes="60x60" href="images/apple-touch-icon-ipad-72x72.png"> 
@@ -39,39 +47,39 @@
                     <div class="row-6">
                         <h5 id="sixHours" class="card-title" style="padding-top: 5px;"></h5>
                         <div class="row text-center">
-                            <div class="col-2">
+                            <div class="col-2" aria-label="One Hour Ahead">
                                 <h6 id="plus1" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus1img"></i>
                                 <p id="plus1temp"></p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" aria-label="Two Hours Ahead">
                                 <h6 id="plus2" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus2img"></i>
                                 <p id="plus2temp"></p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" aria-label="Three Hours Ahead">
                                 <h6 id="plus3" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus3img"></i>
                                 <p id="plus3temp"></p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" aria-label="Four Hours Ahead">
                                 <h6 id="plus4" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus4img"></i>
                                 <p id="plus4temp"></p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" aria-label="Five Hours Ahead">
                                 <h6 id="plus5" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus5img"></i>
                                 <p id="plus5temp"></p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" aria-label="Six Hours Ahead">
                                 <h6 id="plus6" style="margin-bottom: 3px !important;"></h6>
                                 <i id="plus6img"></i>
                                 <p id="plus6temp"></p>
                             </div>
                         </div>
                         <div style="text-align: center; ">
-                            <a href="https://open-meteo.com/" style="align-items: center; font-size: 12px;">Weather data by Open-Meteo.com</a>
+                            <a href="https://open-meteo.com/" style="align-items: center; font-size: 12px;" aria-label="Weather data by Open-Meteo.com">Weather data by Open-Meteo.com</a>
                         </div>
                     </div>
                 </div>
@@ -80,16 +88,16 @@
     </div>
     <script>
         // API key for Geoapify
-        const geoapifyAPIKey = "3b4a008012cb4abe96cd31f596ec91e4"
+        const geoapifyAPIKey = "3b4a008012cb4abe96cd31f596ec91e4" // Have fun taking credit card information with a free service!
         
         // MAIN HEARTBEAT
         // Uses built in navigator to ask for the user's location (coordinates)
         navigator.geolocation.getCurrentPosition((position) => {
             const coordsLat = position.coords.latitude
             const coordsLong = position.coords.longitude
-            // DEBUG
-            // const coordsLat = 44.71116
-            // const coordsLong = 0.97295
+            // DEBUG (injecting custom coordinates to test international functionality)
+            // const coordsLat = 37.92391
+            // const coordsLong = 23.70099
 
             // Returns city from coodinates with geoapify
             fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordsLat}&lon=${coordsLong}&apiKey=${geoapifyAPIKey}`)
@@ -129,7 +137,7 @@
                     let currentWeatherIcon = ""
                     let bgImage = ""
 
-                    // Determining which summary and icon to use from the weather code returned
+                    // Determining which summary, icon, and background image to use from the weather code returned
                     function weatherCodeInterpreter(weatherCode){
                         if (weatherCode == 0){
                             currentWeather = "Clear Sky";
@@ -263,7 +271,7 @@
                     document.querySelector('#currentHiAndLow').innerHTML = `<h6><i class="bi-thermometer-high" style="font-size: 15px; color: red; padding-right: 1px;"></i>${currentHi}° <i class="bi-thermometer-low" style="font-size: 15px; color: blue; padding-right: 1px;"></i>${currentLow}°</h6>`
                     document.querySelector('#currentPrecipitationChance').innerHTML = `<h6><i class="bi-umbrella" style="font-size: 15px; color: darkyellow; padding-right: 3px;"></i>${currentPrecipitationChance}% <i class="bi-droplet-half" style="font-size: 15px; color: cornflowerblue; padding-right: 3px;"></i>${currentHumidity}%</h6>`
                     
-                    // Updates the next six hours
+                    // Updates the next six hours using my very clever id-naming schemes and for-loop skills ;)
                     document.querySelector('#sixHours').innerHTML = "<h5>Next Six Hours...</h5>"
                     for (let i = 1; i < 7; i++){
                         let datestring = objData.hourly.time[currentHour + i]
